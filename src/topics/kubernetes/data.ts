@@ -331,6 +331,43 @@ spec:
     icon: '/icons/k8s/sts.svg'
   },
   {
+    name: 'DaemonSet',
+    shortName: 'DS',
+    category: 'Pod Generator',
+    description: 'A DaemonSet ensures that all (or some) Nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them. As nodes are removed, those Pods are garbage collected.',
+    example: `apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd-elasticsearch
+spec:
+  selector:
+    matchLabels:
+      name: fluentd-elasticsearch
+  template:
+    metadata:
+      labels:
+        name: fluentd-elasticsearch
+    spec:
+      containers:
+      - name: fluentd-elasticsearch
+        image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi`,
+    keyFields: ['spec.selector', 'spec.template', 'spec.updateStrategy'],
+    useCases: [
+      'Node monitoring agents',
+      'Log collectors (Fluentd, Filebeat)',
+      'Storage daemons (Ceph, GlusterFS)',
+      'Network plugins (Calico, Cilium)'
+    ],
+    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/',
+    icon: '/icons/k8s/ds.svg'
+  },
+  {
     name: 'HorizontalPodAutoscaler',
     shortName: 'HPA',
     category: 'Pod Generator',
