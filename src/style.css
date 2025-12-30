@@ -16,8 +16,89 @@ body {
   position: relative;
 }
 
-canvas {
-  display: block;
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.flow-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* React Flow overrides */
+.react-flow__background {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.react-flow__controls {
+  background: rgba(20, 20, 40, 0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+.react-flow__controls-button {
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  fill: rgba(255,255,255,0.7);
+}
+
+.react-flow__controls-button:hover {
+  background: rgba(100, 108, 255, 0.2);
+}
+
+.react-flow__minimap {
+  background: rgba(20, 20, 40, 0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+/* CRD Node Styles */
+.crd-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  background: rgba(20, 20, 40, 0.95);
+  border: 2px solid;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+
+.crd-node:hover {
+  transform: scale(1.05);
+}
+
+.crd-node.selected {
+  transform: scale(1.1);
+}
+
+.crd-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.crd-icon-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+.crd-name {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Header */

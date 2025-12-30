@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 export interface CRDData {
   name: string;
   shortName: string;
@@ -12,13 +10,13 @@ export interface CRDData {
   icon?: string;
 }
 
-export interface NodeData extends CRDData {
-  position: THREE.Vector3;
-  color: number;
+export interface Position {
+  x: number;
+  y: number;
 }
 
 export interface CategoryConfig {
-  center: THREE.Vector3;
+  center: Position;
   radius: number;
 }
 
@@ -27,7 +25,7 @@ export interface TopicConfig {
   name: string;
   description: string;
   crds: CRDData[];
-  categoryColors: Record<string, number>;
+  categoryColors: Record<string, string>;
   categoryPositions: Record<string, CategoryConfig>;
   connections: [string, string][];
 }
