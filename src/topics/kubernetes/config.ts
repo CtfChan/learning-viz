@@ -65,13 +65,7 @@ export const NODE_POSITIONS: Record<string, Position> = {
   ClusterRoleBinding: { x: 1009, y: 369 },
 };
 
-// Connection with type info for styling
-export interface Connection {
-  from: string;
-  to: string;
-  type: "creates" | "references";
-  label?: string;
-}
+import type { Connection } from "../../types";
 
 export const CONNECTIONS_DETAILED: Connection[] = [
   // Network relationships
@@ -150,9 +144,3 @@ export const CONNECTIONS_DETAILED: Connection[] = [
   },
   { from: "RoleBinding", to: "Role", type: "references", label: "references" },
 ];
-
-// Legacy format for backwards compatibility
-export const CONNECTIONS: [string, string][] = CONNECTIONS_DETAILED.map((c) => [
-  c.from,
-  c.to,
-]);
