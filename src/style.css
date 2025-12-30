@@ -373,12 +373,13 @@ body {
 /* Instructions */
 .instructions {
   position: absolute;
-  bottom: 30px;
+  top: 80px;
   right: 30px;
   color: rgba(255,255,255,0.5);
   font-size: 0.8rem;
   text-align: right;
   z-index: 10;
+  pointer-events: none;
 }
 
 .instructions p {

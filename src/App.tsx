@@ -78,34 +78,6 @@ function App() {
     [nodes, setNodes]
   );
 
-  const exportPositions = useCallback(() => {
-    const positions: Record<string, { x: number; y: number }> = {};
-    nodes.forEach((node) => {
-      positions[node.id] = {
-        x: Math.round(node.position.x),
-        y: Math.round(node.position.y),
-      };
-    });
-
-    // Format as TypeScript code
-    const code = `export const NODE_POSITIONS: Record<string, Position> = {\n${
-      Object.entries(positions)
-        .map(([name, pos]) => `  '${name}': { x: ${pos.x}, y: ${pos.y} },`)
-        .join('\n')
-    }\n};`;
-
-    console.log('=== NODE POSITIONS ===');
-    console.log(code);
-    console.log('======================');
-
-    // Also copy to clipboard
-    navigator.clipboard.writeText(code).then(() => {
-      alert('Positions copied to clipboard! Check console for formatted code.');
-    }).catch(() => {
-      alert('Positions logged to console. Copy from there.');
-    });
-  }, [nodes]);
-
   return (
     <div className="app">
       <Header topic={currentTopic} />
@@ -144,9 +116,6 @@ function App() {
       <div className="instructions">
         <p>Drag nodes to reposition | Scroll to zoom</p>
         <p>Click a node for details</p>
-        <button onClick={exportPositions} className="export-btn">
-          Export Positions
-        </button>
       </div>
     </div>
   );
