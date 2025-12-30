@@ -1,6 +1,6 @@
-# K8s Learning - CRD Explorer
+# Learning Viz 
 
-An interactive visualization tool for exploring and understanding Kubernetes Custom Resource Definitions (CRDs), Kueue, KEDA, GCP, and AWS resources. Built with React Flow, this project provides an intuitive way to visualize relationships between different cloud-native resources.
+An interactive visualization tool for Kubernetes. Built with React Flow, this project provides an intuitive way to visualize relationships between different cloud-native resources.
 
 ## Features
 
