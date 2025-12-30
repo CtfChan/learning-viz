@@ -23,46 +23,46 @@ export const CATEGORY_POSITIONS: Record<string, CategoryConfig> = {
   Security: { center: { x: 850, y: 450 }, radius: 180 },
 };
 
-// Explicit node positions matching image.png layout exactly
+// Explicit node positions
 export const NODE_POSITIONS: Record<string, Position> = {
-  // Cluster (far right)
-  Namespace: { x: 1050, y: 80 },
-  Node: { x: 1050, y: 180 },
+  // Cluster
+  Namespace: { x: 1099, y: -6 },
+  Node: { x: 1097, y: 180 },
 
-  // Configuration (top-left) - stacked vertically
-  ConfigMap: { x: 80, y: 80 },
-  Secret: { x: 80, y: 180 },
+  // Configuration
+  ConfigMap: { x: 348, y: 98 },
+  Secret: { x: 205, y: 90 },
 
-  // Network/Exposition (top-center) - Service left, Endpoints below, NetworkPolicy top-center, Ingress right
-  Service: { x: 380, y: 80 },
-  Endpoints: { x: 380, y: 180 },
-  NetworkPolicy: { x: 500, y: 50 },
-  Ingress: { x: 620, y: 120 },
+  // Network
+  Service: { x: 559, y: 27 },
+  Endpoints: { x: 558, y: 195 },
+  Ingress: { x: 727, y: 185 },
+  NetworkPolicy: { x: 718, y: 23 },
 
-  // Resource Management (top-right) - side by side
-  ResourceQuota: { x: 780, y: 100 },
-  LimitRange: { x: 900, y: 100 },
+  // Resource Management
+  ResourceQuota: { x: 887, y: -4 },
+  LimitRange: { x: 896, y: 178 },
 
-  // Pod Generator (bottom-left) - HPA top, Pod/Deployment/ReplicaSet middle row, StatefulSet/DaemonSet/Job bottom
-  HorizontalPodAutoscaler: { x: 80, y: 320 },
+  // Pod Generator
+  HorizontalPodAutoscaler: { x: -213, y: 264 },
   Pod: { x: 310, y: 420 },
-  Deployment: { x: 50, y: 420 },
-  ReplicaSet: { x: 180, y: 420 },
-  StatefulSet: { x: 50, y: 520 },
-  DaemonSet: { x: 180, y: 520 },
-  Job: { x: 310, y: 520 },
+  Deployment: { x: -315, y: 432 },
+  ReplicaSet: { x: -88, y: 426 },
+  StatefulSet: { x: -34, y: 659 },
+  DaemonSet: { x: -21, y: 265 },
+  Job: { x: 34, y: 128 },
 
-  // Storage (center-bottom) - PVC top-left, PV top-right, StorageClass bottom-center
-  PersistentVolumeClaim: { x: 420, y: 420 },
-  PersistentVolume: { x: 560, y: 420 },
-  StorageClass: { x: 490, y: 520 },
+  // Storage
+  PersistentVolume: { x: 333, y: 584 },
+  PersistentVolumeClaim: { x: 516, y: 583 },
+  StorageClass: { x: 532, y: 761 },
 
-  // Security (bottom-right) - complex arrangement
-  ServiceAccount: { x: 760, y: 320 },
-  Role: { x: 900, y: 320 },
-  RoleBinding: { x: 830, y: 420 },
-  ClusterRole: { x: 760, y: 520 },
-  ClusterRoleBinding: { x: 900, y: 520 },
+  // Security
+  ServiceAccount: { x: 738, y: 366 },
+  Role: { x: 929, y: 656 },
+  ClusterRole: { x: 1022, y: 527 },
+  RoleBinding: { x: 747, y: 650 },
+  ClusterRoleBinding: { x: 1009, y: 369 },
 };
 
 // Connection with type info for styling
@@ -149,22 +149,6 @@ export const CONNECTIONS_DETAILED: Connection[] = [
     label: "references",
   },
   { from: "RoleBinding", to: "Role", type: "references", label: "references" },
-
-  // Cluster relationships
-  {
-    from: "ResourceQuota",
-    to: "Namespace",
-    type: "references",
-    label: "references",
-  },
-  {
-    from: "LimitRange",
-    to: "Namespace",
-    type: "references",
-    label: "references",
-  },
-  { from: "DaemonSet", to: "Node", type: "references", label: "references" },
-  { from: "Pod", to: "Node", type: "references", label: "references" },
 ];
 
 // Legacy format for backwards compatibility
