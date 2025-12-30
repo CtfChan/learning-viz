@@ -109,10 +109,14 @@ function onMouseMove(event: MouseEvent) {
   sceneCtx.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
   sceneCtx.raycaster.setFromCamera(sceneCtx.mouse, sceneCtx.camera);
-  const intersects = sceneCtx.raycaster.intersectObjects(nodes);
+  const intersects = sceneCtx.raycaster.intersectObjects(nodes, true);
 
   if (intersects.length > 0) {
-    const node = intersects[0].object as THREE.Mesh;
+    // Get the parent node if we hit a child (like the glow mesh)
+    let node = intersects[0].object as THREE.Mesh;
+    if (node.parent && nodes.includes(node.parent as THREE.Mesh)) {
+      node = node.parent as THREE.Mesh;
+    }
 
     if (hoveredNode !== node) {
       if (hoveredNode && hoveredNode !== selectedNode) {
@@ -145,10 +149,14 @@ function onMouseMove(event: MouseEvent) {
 
 function onClick() {
   sceneCtx.raycaster.setFromCamera(sceneCtx.mouse, sceneCtx.camera);
-  const intersects = sceneCtx.raycaster.intersectObjects(nodes);
+  const intersects = sceneCtx.raycaster.intersectObjects(nodes, true);
 
   if (intersects.length > 0) {
-    const node = intersects[0].object as THREE.Mesh;
+    // Get the parent node if we hit a child (like the glow mesh)
+    let node = intersects[0].object as THREE.Mesh;
+    if (node.parent && nodes.includes(node.parent as THREE.Mesh)) {
+      node = node.parent as THREE.Mesh;
+    }
 
     // Reset previous selection
     if (selectedNode && selectedNode !== node) {
