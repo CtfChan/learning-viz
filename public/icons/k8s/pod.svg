@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68" width="68" height="68">
+  <!-- Kubernetes-style hexagon background -->
+  <path d="M34 2 L62 18 L62 50 L34 66 L6 50 L6 18 Z" fill="#326ce5" stroke="#fff" stroke-width="2"/>
+  <!-- 3D Box/Container icon -->
+  <g fill="none" stroke="#fff" stroke-width="2">
+    <!-- Front face -->
+    <path d="M22 28 L34 22 L46 28 L46 44 L34 50 L22 44 Z" fill="#fff" fill-opacity="0.3"/>
+    <!-- Top face -->
+    <path d="M22 28 L34 22 L46 28 L34 34 Z" fill="#fff" fill-opacity="0.5"/>
+    <!-- Left face -->
+    <path d="M22 28 L34 34 L34 50 L22 44 Z" fill="#fff" fill-opacity="0.2"/>
+    <!-- Right face -->
+    <path d="M46 28 L34 34 L34 50 L46 44 Z" fill="#fff" fill-opacity="0.4"/>
+    <!-- Center vertical line -->
+    <line x1="34" y1="34" x2="34" y2="50" stroke="#fff" stroke-width="1.5"/>
+  </g>
+  <!-- Pod label -->
+  <text x="34" y="60" text-anchor="middle" fill="#fff" font-family="Arial" font-size="7" font-weight="bold">pod</text>
+</svg>

@@ -190,6 +190,37 @@ spec:
   },
   // Pod Generator (Workloads that create/manage pods)
   {
+    name: 'Pod',
+    shortName: 'Pod',
+    category: 'Pod Generator',
+    description: 'A Pod is the smallest deployable unit in Kubernetes. It represents a single instance of a running process and can contain one or more containers that share storage and network resources.',
+    example: `apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"`,
+    keyFields: ['spec.containers', 'spec.volumes', 'spec.restartPolicy', 'spec.nodeSelector'],
+    useCases: [
+      'Running single containers',
+      'Sidecar patterns',
+      'Init containers',
+      'Debugging and testing'
+    ],
+    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/pods/',
+    icon: '/icons/k8s/pod.svg'
+  },
+  {
     name: 'Deployment',
     shortName: 'Deploy',
     category: 'Pod Generator',

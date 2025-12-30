@@ -36,8 +36,9 @@ export const NODE_POSITIONS: Record<string, Position> = {
   'ResourceQuota': { x: 780, y: 100 },
   'LimitRange': { x: 900, y: 100 },
 
-  // Pod Generator (bottom-left) - HPA top, Deployment/ReplicaSet middle row, StatefulSet bottom
+  // Pod Generator (bottom-left) - HPA top, Pod/Deployment/ReplicaSet middle row, StatefulSet bottom
   'HorizontalPodAutoscaler': { x: 80, y: 320 },
+  'Pod': { x: 310, y: 420 },
   'Deployment': { x: 50, y: 420 },
   'ReplicaSet': { x: 180, y: 420 },
   'StatefulSet': { x: 115, y: 520 },
@@ -66,6 +67,8 @@ export interface Connection {
 export const CONNECTIONS_DETAILED: Connection[] = [
   // Pod Generator "creates" relationships
   { from: 'Deployment', to: 'ReplicaSet', type: 'creates', label: 'creates' },
+  { from: 'ReplicaSet', to: 'Pod', type: 'creates', label: 'creates' },
+  { from: 'StatefulSet', to: 'Pod', type: 'creates', label: 'creates' },
   { from: 'StatefulSet', to: 'PersistentVolumeClaim', type: 'creates', label: 'creates' },
 
   // HPA references

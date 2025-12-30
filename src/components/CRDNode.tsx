@@ -11,6 +11,8 @@ export const CRDNode = memo(function CRDNode({ data, selected }: NodeProps) {
     ? `${import.meta.env.BASE_URL}${nodeData.icon.replace(/^\//, '')}`
     : null;
 
+  const handleStyle = { opacity: 0, pointerEvents: 'none' as const };
+
   return (
     <div
       className={`crd-node ${selected ? 'selected' : ''}`}
@@ -19,7 +21,16 @@ export const CRDNode = memo(function CRDNode({ data, selected }: NodeProps) {
         boxShadow: selected ? `0 0 20px ${nodeData.color}` : `0 0 10px ${nodeData.color}40`,
       }}
     >
-      <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
+      {/* Handles on all four sides for flexible edge connections */}
+      <Handle type="source" position={Position.Top} id="top" style={handleStyle} />
+      <Handle type="source" position={Position.Right} id="right" style={handleStyle} />
+      <Handle type="source" position={Position.Bottom} id="bottom" style={handleStyle} />
+      <Handle type="source" position={Position.Left} id="left" style={handleStyle} />
+      <Handle type="target" position={Position.Top} id="top-target" style={handleStyle} />
+      <Handle type="target" position={Position.Right} id="right-target" style={handleStyle} />
+      <Handle type="target" position={Position.Bottom} id="bottom-target" style={handleStyle} />
+      <Handle type="target" position={Position.Left} id="left-target" style={handleStyle} />
+
       {iconUrl ? (
         <img src={iconUrl} alt={nodeData.name} className="crd-icon" />
       ) : (
@@ -29,7 +40,6 @@ export const CRDNode = memo(function CRDNode({ data, selected }: NodeProps) {
         />
       )}
       <div className="crd-name">{nodeData.name}</div>
-      <Handle type="source" position={Position.Bottom} style={{ opacity: 0 }} />
     </div>
   );
 });

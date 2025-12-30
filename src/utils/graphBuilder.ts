@@ -43,15 +43,47 @@ export function buildNodesAndEdges(topic: TopicConfig): {
     });
   });
 
+  // Helper to determine best handles based on relative node positions
+  const getHandles = (sourcePos: { x: number; y: number }, targetPos: { x: number; y: number }) => {
+    const dx = targetPos.x - sourcePos.x;
+    const dy = targetPos.y - sourcePos.y;
+
+    // Determine primary direction
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Horizontal connection
+      if (dx > 0) {
+        return { sourceHandle: 'right', targetHandle: 'left-target' };
+      } else {
+        return { sourceHandle: 'left', targetHandle: 'right-target' };
+      }
+    } else {
+      // Vertical connection
+      if (dy > 0) {
+        return { sourceHandle: 'bottom', targetHandle: 'top-target' };
+      } else {
+        return { sourceHandle: 'top', targetHandle: 'bottom-target' };
+      }
+    }
+  };
+
   // Create edges for connections with styling based on type
   topic.connections.forEach((connection, index) => {
     const isCreates = connection.type === 'creates';
     const color = isCreates ? '#4CAF50' : '#646cff';
 
+    // Get positions to determine handle placement
+    const sourcePos = topic.nodePositions[connection.from];
+    const targetPos = topic.nodePositions[connection.to];
+    const handles = sourcePos && targetPos
+      ? getHandles(sourcePos, targetPos)
+      : { sourceHandle: 'bottom', targetHandle: 'top-target' };
+
     edges.push({
       id: `edge-${index}`,
       source: connection.from,
       target: connection.to,
+      sourceHandle: handles.sourceHandle,
+      targetHandle: handles.targetHandle,
       type: 'default',
       markerEnd: {
         type: 'arrowclosed' as MarkerType,
