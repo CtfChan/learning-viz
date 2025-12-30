@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68" width="68" height="68">
+  <!-- Kubernetes-style hexagon background -->
+  <path d="M34 2 L62 18 L62 50 L34 66 L6 50 L6 18 Z" fill="#326ce5" stroke="#fff" stroke-width="2"/>
+  <!-- Endpoint icon: connection points -->
+  <g fill="#fff">
+    <!-- Central hub -->
+    <circle cx="34" cy="32" r="6"/>
+    <!-- Connection lines radiating out -->
+    <line x1="34" y1="26" x2="34" y2="16" stroke="#fff" stroke-width="2"/>
+    <line x1="40" y1="32" x2="50" y2="32" stroke="#fff" stroke-width="2"/>
+    <line x1="28" y1="32" x2="18" y2="32" stroke="#fff" stroke-width="2"/>
+    <line x1="38" y1="36" x2="46" y2="44" stroke="#fff" stroke-width="2"/>
+    <line x1="30" y1="36" x2="22" y2="44" stroke="#fff" stroke-width="2"/>
+    <!-- Endpoint dots -->
+    <circle cx="34" cy="14" r="3"/>
+    <circle cx="52" cy="32" r="3"/>
+    <circle cx="16" cy="32" r="3"/>
+    <circle cx="48" cy="46" r="3"/>
+    <circle cx="20" cy="46" r="3"/>
+  </g>
+  <!-- Endpoint label -->
+  <text x="34" y="58" text-anchor="middle" fill="#fff" font-family="Arial" font-size="7" font-weight="bold">ep</text>
+</svg>

@@ -1,6 +1,7 @@
 import type { CategoryConfig, Position } from "../../types";
 
 export const CATEGORY_COLORS: Record<string, string> = {
+  Cluster: "#607D8B", // Blue Grey
   Configuration: "#4CAF50", // Green
   Network: "#2196F3", // Blue
   "Resource Management": "#FF9800", // Orange
@@ -12,6 +13,7 @@ export const CATEGORY_COLORS: Record<string, string> = {
 export const CATEGORY_POSITIONS: Record<string, CategoryConfig> = {
   // Layout matching image.png
   // Top row (left to right)
+  Cluster: { center: { x: 1100, y: 150 }, radius: 100 },
   Configuration: { center: { x: 150, y: 150 }, radius: 100 },
   Network: { center: { x: 500, y: 150 }, radius: 180 },
   "Resource Management": { center: { x: 850, y: 150 }, radius: 100 },
@@ -23,12 +25,17 @@ export const CATEGORY_POSITIONS: Record<string, CategoryConfig> = {
 
 // Explicit node positions matching image.png layout exactly
 export const NODE_POSITIONS: Record<string, Position> = {
+  // Cluster (far right)
+  Namespace: { x: 1050, y: 80 },
+  Node: { x: 1050, y: 180 },
+
   // Configuration (top-left) - stacked vertically
   ConfigMap: { x: 80, y: 80 },
   Secret: { x: 80, y: 180 },
 
-  // Network/Exposition (top-center) - Service left, Endpoint below, NetworkPolicy top-center, Ingress right
-  Service: { x: 380, y: 120 },
+  // Network/Exposition (top-center) - Service left, Endpoints below, NetworkPolicy top-center, Ingress right
+  Service: { x: 380, y: 80 },
+  Endpoints: { x: 380, y: 180 },
   NetworkPolicy: { x: 500, y: 50 },
   Ingress: { x: 620, y: 120 },
 
@@ -36,13 +43,14 @@ export const NODE_POSITIONS: Record<string, Position> = {
   ResourceQuota: { x: 780, y: 100 },
   LimitRange: { x: 900, y: 100 },
 
-  // Pod Generator (bottom-left) - HPA top, Pod/Deployment/ReplicaSet middle row, StatefulSet/DaemonSet bottom
+  // Pod Generator (bottom-left) - HPA top, Pod/Deployment/ReplicaSet middle row, StatefulSet/DaemonSet/Job bottom
   HorizontalPodAutoscaler: { x: 80, y: 320 },
   Pod: { x: 310, y: 420 },
   Deployment: { x: 50, y: 420 },
   ReplicaSet: { x: 180, y: 420 },
   StatefulSet: { x: 50, y: 520 },
   DaemonSet: { x: 180, y: 520 },
+  Job: { x: 310, y: 520 },
 
   // Storage (center-bottom) - PVC top-left, PV top-right, StorageClass bottom-center
   PersistentVolumeClaim: { x: 420, y: 420 },
@@ -66,6 +74,16 @@ export interface Connection {
 }
 
 export const CONNECTIONS_DETAILED: Connection[] = [
+  // Network relationships
+  { from: "Service", to: "Endpoints", type: "creates", label: "creates" },
+  { from: "Endpoints", to: "Pod", type: "references", label: "references" },
+  {
+    from: "NetworkPolicy",
+    to: "Service",
+    type: "references",
+    label: "references",
+  },
+
   // Configuration references
   { from: "Pod", to: "ConfigMap", type: "references", label: "references" },
   { from: "Pod", to: "Secret", type: "references", label: "references" },
@@ -103,48 +121,50 @@ export const CONNECTIONS_DETAILED: Connection[] = [
   { from: "Deployment", to: "ReplicaSet", type: "creates", label: "creates" },
   { from: "HorizontalPodAutoscaler", to: "Deployment", type: "references" },
   { from: "HorizontalPodAutoscaler", to: "ReplicaSet", type: "references" },
-  { from: "Job", to: "Pod", type: "references" },
+  { from: "Job", to: "Pod", type: "creates", label: "creates" },
 
-  // // Pod Generator "creates" relationships
-  // { from: "Deployment", to: "ReplicaSet", type: "creates", label: "creates" },
-  // { from: "ReplicaSet", to: "Pod", type: "creates", label: "creates" },
-  // { from: "StatefulSet", to: "Pod", type: "creates", label: "creates" },
-  // {
-  //   from: "StatefulSet",
-  //   to: "PersistentVolumeClaim",
-  //   type: "creates",
-  //   label: "creates",
-  // },
+  // IAM relationships
+  {
+    from: "Pod",
+    to: "ServiceAccount",
+    type: "references",
+    label: "references",
+  },
+  {
+    from: "ClusterRoleBinding",
+    to: "ServiceAccount",
+    type: "references",
+    label: "references",
+  },
+  {
+    from: "ClusterRoleBinding",
+    to: "ClusterRole",
+    type: "references",
+    label: "references",
+  },
+  {
+    from: "RoleBinding",
+    to: "ServiceAccount",
+    type: "references",
+    label: "references",
+  },
+  { from: "RoleBinding", to: "Role", type: "references", label: "references" },
 
-  // // HPA references
-  // { from: "HorizontalPodAutoscaler", to: "Deployment", type: "references" },
-  // { from: "HorizontalPodAutoscaler", to: "ReplicaSet", type: "references" },
-  // { from: "HorizontalPodAutoscaler", to: "StatefulSet", type: "references" },
-
-  // // Storage "references" relationships
-  // {
-  //   from: "PersistentVolumeClaim",
-  //   to: "PersistentVolume",
-  //   type: "references",
-  //   label: "references",
-  // },
-  // { from: "PersistentVolumeClaim", to: "StorageClass", type: "references" },
-  // { from: "PersistentVolume", to: "StorageClass", type: "references" },
-
-  // // Network relationships
-  // { from: "Ingress", to: "Service", type: "references" },
-  // { from: "NetworkPolicy", to: "Service", type: "references" },
-
-  // // Security relationships - Role bindings
-  // { from: "RoleBinding", to: "Role", type: "references" },
-  // { from: "RoleBinding", to: "ServiceAccount", type: "references" },
-  // { from: "ClusterRoleBinding", to: "ClusterRole", type: "references" },
-  // { from: "ClusterRoleBinding", to: "ServiceAccount", type: "references" },
-
-  // // Configuration references (workloads reference these)
-
-  // { from: "Deployment", to: "ServiceAccount", type: "references" },
-  // { from: "StatefulSet", to: "ServiceAccount", type: "references" },
+  // Cluster relationships
+  {
+    from: "ResourceQuota",
+    to: "Namespace",
+    type: "references",
+    label: "references",
+  },
+  {
+    from: "LimitRange",
+    to: "Namespace",
+    type: "references",
+    label: "references",
+  },
+  { from: "DaemonSet", to: "Node", type: "references", label: "references" },
+  { from: "Pod", to: "Node", type: "references", label: "references" },
 ];
 
 // Legacy format for backwards compatibility

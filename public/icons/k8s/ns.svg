@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68" width="68" height="68">
+  <!-- Kubernetes-style hexagon background -->
+  <path d="M34 2 L62 18 L62 50 L34 66 L6 50 L6 18 Z" fill="#326ce5" stroke="#fff" stroke-width="2"/>
+  <!-- Namespace icon: nested rectangles representing isolation -->
+  <g fill="none" stroke="#fff" stroke-width="2">
+    <!-- Outer boundary -->
+    <rect x="14" y="18" width="40" height="28" rx="3"/>
+    <!-- Inner grouped items -->
+    <rect x="20" y="24" width="12" height="8" rx="2" fill="#fff" fill-opacity="0.3"/>
+    <rect x="36" y="24" width="12" height="8" rx="2" fill="#fff" fill-opacity="0.3"/>
+    <rect x="28" y="34" width="12" height="8" rx="2" fill="#fff" fill-opacity="0.3"/>
+  </g>
+  <!-- Namespace label -->
+  <text x="34" y="58" text-anchor="middle" fill="#fff" font-family="Arial" font-size="7" font-weight="bold">ns</text>
+</svg>

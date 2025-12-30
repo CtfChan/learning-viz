@@ -1,6 +1,56 @@
 import type { CRDData } from '../../types';
 
 export const CRDS: CRDData[] = [
+  // Cluster
+  {
+    name: 'Namespace',
+    shortName: 'NS',
+    category: 'Cluster',
+    description: 'Namespaces provide a mechanism for isolating groups of resources within a single cluster. Names of resources need to be unique within a namespace, but not across namespaces.',
+    example: `apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+  labels:
+    environment: production
+    team: backend`,
+    keyFields: ['metadata.name', 'metadata.labels', 'status.phase'],
+    useCases: [
+      'Environment isolation (dev, staging, prod)',
+      'Team-based resource separation',
+      'Multi-tenant clusters',
+      'Resource quota boundaries'
+    ],
+    docsUrl: 'https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/',
+    icon: '/icons/k8s/ns.svg'
+  },
+  {
+    name: 'Node',
+    shortName: 'Node',
+    category: 'Cluster',
+    description: 'A Node is a worker machine in Kubernetes. Each Node is managed by the control plane and contains the services necessary to run Pods, including the container runtime, kubelet, and kube-proxy.',
+    example: `apiVersion: v1
+kind: Node
+metadata:
+  name: worker-node-1
+  labels:
+    kubernetes.io/os: linux
+    node.kubernetes.io/instance-type: m5.large
+spec:
+  taints:
+  - key: "special"
+    value: "true"
+    effect: "NoSchedule"`,
+    keyFields: ['spec.taints', 'status.conditions', 'status.capacity', 'status.allocatable'],
+    useCases: [
+      'View cluster capacity',
+      'Node labeling for scheduling',
+      'Taints and tolerations',
+      'Node maintenance (cordon/drain)'
+    ],
+    docsUrl: 'https://kubernetes.io/docs/concepts/architecture/nodes/',
+    icon: '/icons/k8s/node.svg'
+  },
   // Configuration
   {
     name: 'ConfigMap',
@@ -77,6 +127,31 @@ spec:
     ],
     docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/service/',
     icon: '/icons/k8s/svc.svg'
+  },
+  {
+    name: 'Endpoints',
+    shortName: 'EP',
+    category: 'Network',
+    description: 'Endpoints define the network addresses (IP and port) where a Service can send traffic. They are automatically created and managed by Kubernetes when a Service selector matches Pods.',
+    example: `apiVersion: v1
+kind: Endpoints
+metadata:
+  name: my-service
+subsets:
+  - addresses:
+      - ip: 192.168.1.1
+      - ip: 192.168.1.2
+    ports:
+      - port: 9376`,
+    keyFields: ['subsets', 'subsets[].addresses', 'subsets[].ports'],
+    useCases: [
+      'Service discovery backend',
+      'Manual endpoint management',
+      'External service integration',
+      'Debugging service connectivity'
+    ],
+    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/service/#endpoints',
+    icon: '/icons/k8s/ep.svg'
   },
   {
     name: 'Ingress',
@@ -366,6 +441,34 @@ spec:
     ],
     docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/',
     icon: '/icons/k8s/ds.svg'
+  },
+  {
+    name: 'Job',
+    shortName: 'Job',
+    category: 'Pod Generator',
+    description: 'A Job creates one or more Pods and ensures that a specified number of them successfully terminate. Jobs track successful completions and when the specified number is reached, the Job is complete.',
+    example: `apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: perl:5.34.0
+        command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      restartPolicy: Never
+  backoffLimit: 4`,
+    keyFields: ['spec.template', 'spec.completions', 'spec.parallelism', 'spec.backoffLimit'],
+    useCases: [
+      'Batch processing',
+      'Data migrations',
+      'One-time tasks',
+      'Parallel computation'
+    ],
+    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/job/',
+    icon: '/icons/k8s/job.svg'
   },
   {
     name: 'HorizontalPodAutoscaler',
