@@ -9,19 +9,6 @@ export function createNodes(
 ): { nodes: THREE.Mesh[]; nodeDataMap: Map<THREE.Mesh, NodeData> } {
   const nodes: THREE.Mesh[] = [];
   const nodeDataMap = new Map<THREE.Mesh, NodeData>();
-  const categories = [...new Set(crds.map(crd => crd.category))];
-
-  // Create category labels
-  categories.forEach(category => {
-    const pos = categoryPositions[category];
-    if (pos) {
-      createCategoryLabel(
-        scene,
-        category,
-        pos.center.clone().add(new THREE.Vector3(0, pos.radius + 1.5, 0))
-      );
-    }
-  });
 
   // Create nodes for each CRD
   crds.forEach((crd) => {
@@ -75,8 +62,8 @@ export function createNodes(
     scene.add(mesh);
     nodes.push(mesh);
 
-    // Create label
-    createNodeLabel(scene, crd.shortName, position);
+    // Create label with full name
+    createNodeLabel(scene, crd.name, position);
   });
 
   return { nodes, nodeDataMap };
@@ -85,16 +72,18 @@ export function createNodes(
 function createNodeLabel(scene: THREE.Scene, text: string, position: THREE.Vector3): void {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
-  canvas.width = 256;
+  canvas.width = 512;
   canvas.height = 64;
 
   context.fillStyle = 'transparent';
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  context.font = 'bold 28px Arial';
+  // Adjust font size based on text length
+  const fontSize = text.length > 15 ? 20 : 24;
+  context.font = `bold ${fontSize}px Arial`;
   context.textAlign = 'center';
   context.fillStyle = '#ffffff';
-  context.fillText(text, canvas.width / 2, canvas.height / 2 + 10);
+  context.fillText(text, canvas.width / 2, canvas.height / 2 + 8);
 
   const texture = new THREE.CanvasTexture(canvas);
   const material = new THREE.SpriteMaterial({
@@ -105,33 +94,7 @@ function createNodeLabel(scene: THREE.Scene, text: string, position: THREE.Vecto
   const sprite = new THREE.Sprite(material);
   sprite.position.copy(position);
   sprite.position.y -= 1.2;
-  sprite.scale.set(2, 0.5, 1);
-  scene.add(sprite);
-}
-
-function createCategoryLabel(scene: THREE.Scene, text: string, position: THREE.Vector3): void {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d')!;
-  canvas.width = 512;
-  canvas.height = 64;
-
-  context.fillStyle = 'transparent';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  context.font = 'bold 32px Arial';
-  context.textAlign = 'center';
-  context.fillStyle = 'rgba(255, 255, 255, 0.6)';
-  context.fillText(text.toUpperCase(), canvas.width / 2, canvas.height / 2 + 10);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  const material = new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true,
-    depthTest: false,
-  });
-  const sprite = new THREE.Sprite(material);
-  sprite.position.copy(position);
-  sprite.scale.set(6, 0.75, 1);
+  sprite.scale.set(4, 0.5, 1);
   scene.add(sprite);
 }
 
