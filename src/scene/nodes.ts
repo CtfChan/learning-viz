@@ -48,16 +48,16 @@ export function createNodes(
     const categoryConfig = categoryPositions[crd.category];
     if (!categoryConfig) return;
 
-    // Calculate position within category cluster
+    // Calculate position within category cluster (2D layout - X and Y only)
     const crdsInCategory = crds.filter(c => c.category === crd.category);
     const indexInCategory = crdsInCategory.indexOf(crd);
-    const angle = (indexInCategory / crdsInCategory.length) * Math.PI * 2;
-    const radius = categoryConfig.radius * 0.7;
+    const angle = (indexInCategory / crdsInCategory.length) * Math.PI * 2 - Math.PI / 2; // Start from top
+    const radius = categoryConfig.radius * 0.8;
 
     const position = new THREE.Vector3(
       categoryConfig.center.x + Math.cos(angle) * radius,
-      categoryConfig.center.y + Math.sin(angle) * radius * 0.5,
-      Math.sin(angle) * 2 + (Math.random() - 0.5) * 2
+      categoryConfig.center.y + Math.sin(angle) * radius,
+      0 // Flat on XY plane
     );
 
     const color = categoryColors[crd.category] || 0xffffff;

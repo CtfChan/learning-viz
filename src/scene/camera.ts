@@ -2,14 +2,16 @@ import * as THREE from 'three';
 import type { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export function animateCamera(
-  camera: THREE.PerspectiveCamera,
+  camera: THREE.OrthographicCamera,
   controls: OrbitControls,
-  targetPosition: THREE.Vector3,
+  _targetPosition: THREE.Vector3,
   lookAt: THREE.Vector3
 ): void {
-  const startPosition = camera.position.clone();
+  // For 2D orthographic view, we pan the camera to center on the target
+  // The camera stays at a fixed Z position looking at the XY plane
   const startTarget = controls.target.clone();
-  const duration = 1000;
+  const targetXY = new THREE.Vector3(lookAt.x, lookAt.y, 0);
+  const duration = 500;
   const startTime = Date.now();
 
   function update() {
@@ -17,8 +19,9 @@ export function animateCamera(
     const progress = Math.min(elapsed / duration, 1);
     const eased = easeOutCubic(progress);
 
-    camera.position.lerpVectors(startPosition, targetPosition, eased);
-    controls.target.lerpVectors(startTarget, lookAt, eased);
+    controls.target.lerpVectors(startTarget, targetXY, eased);
+    camera.position.x = controls.target.x;
+    camera.position.y = controls.target.y;
 
     if (progress < 1) {
       requestAnimationFrame(update);

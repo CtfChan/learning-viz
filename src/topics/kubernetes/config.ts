@@ -11,12 +11,15 @@ export const CATEGORY_COLORS: Record<string, number> = {
 };
 
 export const CATEGORY_POSITIONS: Record<string, CategoryConfig> = {
-  'Configuration': { center: new THREE.Vector3(-8, 4, 0), radius: 3 },
+  // 2D grid layout (X = horizontal, Y = vertical, Z = 0)
+  // Top row
+  'Configuration': { center: new THREE.Vector3(-12, 6, 0), radius: 3 },
   'Network': { center: new THREE.Vector3(0, 6, 0), radius: 4 },
-  'Resource Management': { center: new THREE.Vector3(8, 4, 0), radius: 3 },
-  'Workloads': { center: new THREE.Vector3(-6, -2, 0), radius: 5 },
-  'Storage': { center: new THREE.Vector3(6, -2, 0), radius: 4 },
-  'Security': { center: new THREE.Vector3(0, -6, 0), radius: 5 },
+  'Resource Management': { center: new THREE.Vector3(12, 6, 0), radius: 3 },
+  // Bottom row
+  'Workloads': { center: new THREE.Vector3(-10, -4, 0), radius: 4 },
+  'Storage': { center: new THREE.Vector3(0, -4, 0), radius: 3 },
+  'Security': { center: new THREE.Vector3(10, -4, 0), radius: 4 },
 };
 
 export const CONNECTIONS: [string, string][] = [

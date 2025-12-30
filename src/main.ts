@@ -189,16 +189,6 @@ function onClick() {
 
 function animate() {
   requestAnimationFrame(animate);
-
-  // Gentle floating animation for nodes
-  const time = Date.now() * 0.001;
-  nodes.forEach((node, i) => {
-    const data = nodeDataMap.get(node);
-    if (data) {
-      node.position.y = data.position.y + Math.sin(time + i * 0.5) * 0.1;
-    }
-  });
-
   sceneCtx.controls.update();
   sceneCtx.renderer.render(sceneCtx.scene, sceneCtx.camera);
 }
