@@ -188,11 +188,11 @@ spec:
     docsUrl: 'https://kubernetes.io/docs/concepts/policy/limit-range/',
     icon: '/icons/k8s/limits.svg'
   },
-  // Workloads
+  // Pod Generator (Workloads that create/manage pods)
   {
     name: 'Deployment',
     shortName: 'Deploy',
-    category: 'Workloads',
+    category: 'Pod Generator',
     description: 'A Deployment provides declarative updates for Pods and ReplicaSets. You describe a desired state and the Deployment Controller changes the actual state to match.',
     example: `apiVersion: apps/v1
 kind: Deployment
@@ -226,7 +226,7 @@ spec:
   {
     name: 'ReplicaSet',
     shortName: 'RS',
-    category: 'Workloads',
+    category: 'Pod Generator',
     description: 'ReplicaSet ensures that a specified number of pod replicas are running at any given time. It is often used indirectly through Deployments.',
     example: `apiVersion: apps/v1
 kind: ReplicaSet
@@ -258,7 +258,7 @@ spec:
   {
     name: 'StatefulSet',
     shortName: 'STS',
-    category: 'Workloads',
+    category: 'Pod Generator',
     description: 'StatefulSet manages stateful applications with guarantees about ordering and uniqueness of Pods. Each Pod has a persistent identifier maintained across rescheduling.',
     example: `apiVersion: apps/v1
 kind: StatefulSet
@@ -302,7 +302,7 @@ spec:
   {
     name: 'HorizontalPodAutoscaler',
     shortName: 'HPA',
-    category: 'Workloads',
+    category: 'Pod Generator',
     description: 'HPA automatically scales the number of Pods in a workload resource based on observed CPU utilization or custom metrics.',
     example: `apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler

@@ -20,6 +20,13 @@ export interface CategoryConfig {
   radius: number;
 }
 
+export interface Connection {
+  from: string;
+  to: string;
+  type: 'creates' | 'references';
+  label?: string;
+}
+
 export interface TopicConfig {
   id: string;
   name: string;
@@ -27,5 +34,6 @@ export interface TopicConfig {
   crds: CRDData[];
   categoryColors: Record<string, string>;
   categoryPositions: Record<string, CategoryConfig>;
-  connections: [string, string][];
+  nodePositions: Record<string, Position>; // Explicit position for each node by name
+  connections: Connection[];
 }

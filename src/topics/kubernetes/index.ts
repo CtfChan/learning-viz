@@ -1,6 +1,6 @@
 import type { TopicConfig } from '../../types';
 import { CRDS } from './data';
-import { CATEGORY_COLORS, CATEGORY_POSITIONS, CONNECTIONS } from './config';
+import { CATEGORY_COLORS, CATEGORY_POSITIONS, NODE_POSITIONS, CONNECTIONS_DETAILED } from './config';
 
 export const kubernetes: TopicConfig = {
   id: 'kubernetes',
@@ -9,5 +9,6 @@ export const kubernetes: TopicConfig = {
   crds: CRDS,
   categoryColors: CATEGORY_COLORS,
   categoryPositions: CATEGORY_POSITIONS,
-  connections: CONNECTIONS,
+  nodePositions: NODE_POSITIONS,
+  connections: CONNECTIONS_DETAILED,
 };
