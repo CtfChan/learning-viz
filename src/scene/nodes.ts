@@ -1,14 +1,47 @@
 import * as THREE from 'three';
 import type { CRDData, NodeData, CategoryConfig } from '../types';
 
+const textureCache = new Map<string, THREE.Texture>();
+
+function loadSvgTexture(iconPath: string): Promise<THREE.Texture | null> {
+  if (textureCache.has(iconPath)) {
+    return Promise.resolve(textureCache.get(iconPath)!);
+  }
+
+  return new Promise((resolve) => {
+    const img = new Image();
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 256;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0, 256, 256);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.needsUpdate = true;
+      textureCache.set(iconPath, texture);
+      resolve(texture);
+    };
+
+    img.onerror = () => {
+      console.warn(`Failed to load icon: ${iconPath}`);
+      resolve(null);
+    };
+
+    // Use import.meta.env.BASE_URL for Vite base path
+    img.src = import.meta.env.BASE_URL + iconPath.replace(/^\//, '');
+  });
+}
+
 export function createNodes(
   scene: THREE.Scene,
   crds: CRDData[],
   categoryColors: Record<string, number>,
   categoryPositions: Record<string, CategoryConfig>
-): { nodes: THREE.Mesh[]; nodeDataMap: Map<THREE.Mesh, NodeData> } {
-  const nodes: THREE.Mesh[] = [];
-  const nodeDataMap = new Map<THREE.Mesh, NodeData>();
+): { nodes: THREE.Object3D[]; nodeDataMap: Map<THREE.Object3D, NodeData> } {
+  const nodes: THREE.Object3D[] = [];
+  const nodeDataMap = new Map<THREE.Object3D, NodeData>();
 
   // Create nodes for each CRD
   crds.forEach((crd) => {
@@ -29,79 +62,84 @@ export function createNodes(
 
     const color = categoryColors[crd.category] || 0xffffff;
 
-    // Create sphere
-    const geometry = new THREE.SphereGeometry(0.6, 32, 32);
-    const material = new THREE.MeshPhongMaterial({
-      color: color,
-      emissive: color,
-      emissiveIntensity: 0.2,
-      shininess: 100,
+    // Create container group
+    const group = new THREE.Group();
+    group.position.copy(position);
+
+    // Create invisible sphere for raycasting only
+    // Uses transparent material with depthWrite disabled so it doesn't occlude other objects
+    const hitGeometry = new THREE.SphereGeometry(1.0, 8, 8);
+    const hitMaterial = new THREE.MeshBasicMaterial({
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
     });
+    const hitMesh = new THREE.Mesh(hitGeometry, hitMaterial);
+    group.add(hitMesh);
 
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.copy(position);
-
-    // Store data
+    // Store data on the group
     const nodeData: NodeData = {
       ...crd,
-      position,
+      position: position.clone(),
       color,
     };
-    nodeDataMap.set(mesh, nodeData);
 
-    // Add glow effect
-    const glowGeometry = new THREE.SphereGeometry(0.8, 32, 32);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: color,
-      transparent: true,
-      opacity: 0.15,
-    });
-    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-    mesh.add(glow);
+    // We'll use the group as the "node" for raycasting
+    scene.add(group);
+    nodes.push(group);
+    nodeDataMap.set(group, nodeData);
 
-    scene.add(mesh);
-    nodes.push(mesh);
-
-    // Create label with full name
-    createNodeLabel(scene, crd.name, position);
+    // Load and add icon sprite
+    if (crd.icon) {
+      loadSvgTexture(crd.icon).then((texture) => {
+        if (texture) {
+          const spriteMaterial = new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+          });
+          const sprite = new THREE.Sprite(spriteMaterial);
+          sprite.scale.set(2.5, 2.5, 1);
+          group.add(sprite);
+        } else {
+          // Fallback: create a colored sphere if icon fails to load
+          addFallbackSphere(group, color);
+        }
+      });
+    } else {
+      // No icon: create a colored sphere
+      addFallbackSphere(group, color);
+    }
   });
 
   return { nodes, nodeDataMap };
 }
 
-function createNodeLabel(scene: THREE.Scene, text: string, position: THREE.Vector3): void {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d')!;
-  canvas.width = 512;
-  canvas.height = 64;
-
-  context.fillStyle = 'transparent';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Adjust font size based on text length
-  const fontSize = text.length > 15 ? 20 : 24;
-  context.font = `bold ${fontSize}px Arial`;
-  context.textAlign = 'center';
-  context.fillStyle = '#ffffff';
-  context.fillText(text, canvas.width / 2, canvas.height / 2 + 8);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  const material = new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true,
-    depthTest: false,
+function addFallbackSphere(group: THREE.Group, color: number): void {
+  const geometry = new THREE.SphereGeometry(0.6, 32, 32);
+  const material = new THREE.MeshPhongMaterial({
+    color: color,
+    emissive: color,
+    emissiveIntensity: 0.2,
+    shininess: 100,
   });
-  const sprite = new THREE.Sprite(material);
-  sprite.position.copy(position);
-  sprite.position.y -= 1.2;
-  sprite.scale.set(4, 0.5, 1);
-  scene.add(sprite);
+  const sphere = new THREE.Mesh(geometry, material);
+  group.add(sphere);
+
+  // Add glow
+  const glowGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+  const glowMaterial = new THREE.MeshBasicMaterial({
+    color: color,
+    transparent: true,
+    opacity: 0.15,
+  });
+  const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+  group.add(glow);
 }
 
 export function createConnections(
   scene: THREE.Scene,
-  nodes: THREE.Mesh[],
-  nodeDataMap: Map<THREE.Mesh, NodeData>,
+  nodes: THREE.Object3D[],
+  nodeDataMap: Map<THREE.Object3D, NodeData>,
   connections: [string, string][]
 ): void {
   connections.forEach(([from, to]) => {
@@ -122,14 +160,10 @@ export function createConnections(
   });
 }
 
-export function highlightNode(mesh: THREE.Mesh): void {
-  const material = mesh.material as THREE.MeshPhongMaterial;
-  material.emissiveIntensity = 0.5;
-  mesh.scale.setScalar(1.2);
+export function highlightNode(node: THREE.Object3D): void {
+  node.scale.setScalar(1.3);
 }
 
-export function resetNodeHighlight(mesh: THREE.Mesh): void {
-  const material = mesh.material as THREE.MeshPhongMaterial;
-  material.emissiveIntensity = 0.2;
-  mesh.scale.setScalar(1);
+export function resetNodeHighlight(node: THREE.Object3D): void {
+  node.scale.setScalar(1);
 }

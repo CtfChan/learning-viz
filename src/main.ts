@@ -29,10 +29,10 @@ import {
 // State
 let sceneCtx: SceneContext;
 let currentTopic: TopicConfig = defaultTopic;
-let nodes: THREE.Mesh[] = [];
-let nodeDataMap = new Map<THREE.Mesh, NodeData>();
-let hoveredNode: THREE.Mesh | null = null;
-let selectedNode: THREE.Mesh | null = null;
+let nodes: THREE.Object3D[] = [];
+let nodeDataMap = new Map<THREE.Object3D, NodeData>();
+let hoveredNode: THREE.Object3D | null = null;
+let selectedNode: THREE.Object3D | null = null;
 
 function init() {
   const app = document.querySelector<HTMLDivElement>('#app')!;
@@ -104,6 +104,18 @@ function focusCategory(category: string) {
   animateCamera(sceneCtx.camera, sceneCtx.controls, targetPosition, center);
 }
 
+function findNodeFromIntersect(object: THREE.Object3D): THREE.Object3D | null {
+  // Walk up the parent chain to find the node group
+  let current: THREE.Object3D | null = object;
+  while (current) {
+    if (nodes.includes(current)) {
+      return current;
+    }
+    current = current.parent;
+  }
+  return null;
+}
+
 function onMouseMove(event: MouseEvent) {
   sceneCtx.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   sceneCtx.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -112,13 +124,9 @@ function onMouseMove(event: MouseEvent) {
   const intersects = sceneCtx.raycaster.intersectObjects(nodes, true);
 
   if (intersects.length > 0) {
-    // Get the parent node if we hit a child (like the glow mesh)
-    let node = intersects[0].object as THREE.Mesh;
-    if (node.parent && nodes.includes(node.parent as THREE.Mesh)) {
-      node = node.parent as THREE.Mesh;
-    }
+    const node = findNodeFromIntersect(intersects[0].object);
 
-    if (hoveredNode !== node) {
+    if (node && hoveredNode !== node) {
       if (hoveredNode && hoveredNode !== selectedNode) {
         resetNodeHighlight(hoveredNode);
       }
@@ -132,7 +140,7 @@ function onMouseMove(event: MouseEvent) {
       if (data) {
         showTooltip(data.name, event.clientX, event.clientY);
       }
-    } else {
+    } else if (node) {
       updateTooltipPosition(event.clientX, event.clientY);
     }
 
@@ -152,11 +160,8 @@ function onClick() {
   const intersects = sceneCtx.raycaster.intersectObjects(nodes, true);
 
   if (intersects.length > 0) {
-    // Get the parent node if we hit a child (like the glow mesh)
-    let node = intersects[0].object as THREE.Mesh;
-    if (node.parent && nodes.includes(node.parent as THREE.Mesh)) {
-      node = node.parent as THREE.Mesh;
-    }
+    const node = findNodeFromIntersect(intersects[0].object);
+    if (!node) return;
 
     // Reset previous selection
     if (selectedNode && selectedNode !== node) {

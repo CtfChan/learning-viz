@@ -24,7 +24,8 @@ data:
       'Feature flags',
       'External service URLs'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/configuration/configmap/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/configuration/configmap/',
+    icon: '/icons/k8s/cm.svg'
   },
   {
     name: 'Secret',
@@ -46,7 +47,8 @@ data:
       'TLS certificates',
       'SSH keys'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/configuration/secret/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/configuration/secret/',
+    icon: '/icons/k8s/secret.svg'
   },
   // Network
   {
@@ -73,7 +75,8 @@ spec:
       'Exposing applications externally',
       'Headless services for StatefulSets'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/service/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/service/',
+    icon: '/icons/k8s/svc.svg'
   },
   {
     name: 'Ingress',
@@ -104,7 +107,8 @@ spec:
       'Name-based virtual hosting',
       'Path-based routing'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/ingress/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/ingress/',
+    icon: '/icons/k8s/ing.svg'
   },
   {
     name: 'NetworkPolicy',
@@ -126,7 +130,8 @@ spec:
       'Allow specific ingress/egress',
       'Implement zero-trust networking'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/network-policies/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/services-networking/network-policies/',
+    icon: '/icons/k8s/netpol.svg'
   },
   // Resource Management
   {
@@ -152,7 +157,8 @@ spec:
       'Multi-tenant clusters',
       'Cost management'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/policy/resource-quotas/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/policy/resource-quotas/',
+    icon: '/icons/k8s/quota.svg'
   },
   {
     name: 'LimitRange',
@@ -179,7 +185,8 @@ spec:
       'Prevent resource-less pods',
       'Standardize resource allocation'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/policy/limit-range/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/policy/limit-range/',
+    icon: '/icons/k8s/limits.svg'
   },
   // Workloads
   {
@@ -213,7 +220,8 @@ spec:
       'Rollback deployments',
       'Scale applications'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/deployment/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/deployment/',
+    icon: '/icons/k8s/deploy.svg'
   },
   {
     name: 'ReplicaSet',
@@ -244,7 +252,8 @@ spec:
       'Used by Deployments internally',
       'Direct use for specific scenarios'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/',
+    icon: '/icons/k8s/rs.svg'
   },
   {
     name: 'StatefulSet',
@@ -287,7 +296,8 @@ spec:
       'Applications requiring stable network IDs',
       'Ordered deployment and scaling'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/',
+    icon: '/icons/k8s/sts.svg'
   },
   {
     name: 'HorizontalPodAutoscaler',
@@ -319,7 +329,8 @@ spec:
       'Cost optimization',
       'Custom metrics scaling'
     ],
-    docsUrl: 'https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/'
+    docsUrl: 'https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/',
+    icon: '/icons/k8s/hpa.svg'
   },
   // Storage
   {
@@ -347,7 +358,8 @@ spec:
       'Shared file systems',
       'Static provisioning'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/storage/persistent-volumes/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/storage/persistent-volumes/',
+    icon: '/icons/k8s/pv.svg'
   },
   {
     name: 'PersistentVolumeClaim',
@@ -372,7 +384,8 @@ spec:
       'Bind to specific PVs',
       'Storage class selection'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims'
+    docsUrl: 'https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims',
+    icon: '/icons/k8s/pvc.svg'
   },
   {
     name: 'StorageClass',
@@ -395,7 +408,8 @@ allowVolumeExpansion: true`,
       'Dynamic provisioning',
       'Volume encryption settings'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/storage/storage-classes/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/storage/storage-classes/',
+    icon: '/icons/k8s/sc.svg'
   },
   // Security
   {
@@ -415,7 +429,8 @@ automountServiceAccountToken: false`,
       'Workload identity (GKE/EKS)',
       'API server access'
     ],
-    docsUrl: 'https://kubernetes.io/docs/concepts/security/service-accounts/'
+    docsUrl: 'https://kubernetes.io/docs/concepts/security/service-accounts/',
+    icon: '/icons/k8s/sa.svg'
   },
   {
     name: 'Role',
@@ -438,7 +453,8 @@ rules:
       'Developer access',
       'CI/CD pipeline permissions'
     ],
-    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/'
+    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/',
+    icon: '/icons/k8s/role.svg'
   },
   {
     name: 'ClusterRole',
@@ -460,7 +476,8 @@ rules:
       'Aggregated ClusterRoles',
       'Admin access patterns'
     ],
-    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole'
+    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole',
+    icon: '/icons/k8s/c-role.svg'
   },
   {
     name: 'RoleBinding',
@@ -487,7 +504,8 @@ roleRef:
       'Grant namespace access',
       'Team-based permissions'
     ],
-    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding'
+    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding',
+    icon: '/icons/k8s/rb.svg'
   },
   {
     name: 'ClusterRoleBinding',
@@ -513,6 +531,7 @@ roleRef:
       'Service account cluster access',
       'Cross-namespace permissions'
     ],
-    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding'
+    docsUrl: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding',
+    icon: '/icons/k8s/crb.svg'
   },
 ];

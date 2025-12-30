@@ -9,6 +9,7 @@ export interface CRDData {
   keyFields: string[];
   useCases: string[];
   docsUrl: string;
+  icon?: string;
 }
 
 export interface NodeData extends CRDData {
