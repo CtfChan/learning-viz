@@ -1,4 +1,20 @@
 import type { ArchitectureConfig } from '../../types';
+import type { Position } from '../../types';
+
+// Explicit node positions (relative to parent group)
+// Drag nodes around and click "Export Positions" to update these
+export const NODE_POSITIONS: Record<string, Position> = {
+  // Control Plane components
+  'kube-apiserver': { x: 518, y: 130 },
+  'etcd': { x: 74, y: 182 },
+  'kube-scheduler': { x: 76, y: 91 },
+  'kube-controller-manager': { x: 55, y: 265 },
+  'cloud-controller-manager': { x: 509, y: 278 },
+  // Worker Node components
+  'kubelet': { x: 91, y: 217 },
+  'kube-proxy': { x: 90, y: 119 },
+  'container-runtime': { x: 471, y: 296 },
+};
 
 export const ARCHITECTURE_CONFIG: ArchitectureConfig = {
   groups: [
@@ -131,11 +147,13 @@ export const ARCHITECTURE_CONFIG: ArchitectureConfig = {
   ],
   connections: [
     // API server is the hub - connects to everything
-    { from: 'kube-apiserver', to: 'etcd', label: 'reads/writes state' },
-    { from: 'kube-scheduler', to: 'kube-apiserver', label: 'watches pods' },
-    { from: 'kube-controller-manager', to: 'kube-apiserver', label: 'watches/updates' },
-    { from: 'cloud-controller-manager', to: 'kube-apiserver', label: 'watches/updates' },
-    { from: 'kubelet', to: 'kube-apiserver', label: 'reports status' },
-    { from: 'kubelet', to: 'container-runtime', label: 'manages containers' },
+    // Based on positions: apiserver is right (x:518), etcd/scheduler/controller-manager are left (x:55-76)
+    { from: 'kube-apiserver', to: 'etcd', label: 'reads/writes state', sourceHandle: 'left', targetHandle: 'right' },
+    { from: 'kube-scheduler', to: 'kube-apiserver', label: 'watches pods', sourceHandle: 'right', targetHandle: 'left' },
+    { from: 'kube-controller-manager', to: 'kube-apiserver', label: 'watches/updates', sourceHandle: 'right', targetHandle: 'left' },
+    { from: 'cloud-controller-manager', to: 'kube-apiserver', label: 'watches/updates', sourceHandle: 'top', targetHandle: 'bottom' },
+    // Cross-group connections
+    { from: 'kubelet', to: 'kube-apiserver', label: 'reports status', sourceHandle: 'top', targetHandle: 'bottom' },
+    { from: 'kubelet', to: 'container-runtime', label: 'manages containers', sourceHandle: 'right', targetHandle: 'left' },
   ],
 };

@@ -1,5 +1,5 @@
 import type { Node, Edge } from '@xyflow/react';
-import type { ArchitectureConfig } from '../types';
+import type { ArchitectureConfig, Position } from '../types';
 
 export interface ArchitectureNodeData {
   id: string;
@@ -20,16 +20,19 @@ export interface GroupNodeData {
   [key: string]: unknown;
 }
 
-const GROUP_WIDTH = 580;
-const GROUP_HEIGHT = 280;
-const GROUP_GAP = 80;
-const NODE_WIDTH = 140;
-const NODE_HEIGHT = 60;
-const PADDING = 30;
-const HEADER_HEIGHT = 50;
-const SPACING = 20;
+const GROUP_WIDTH = 700;
+const GROUP_HEIGHT = 380;
+const GROUP_GAP = 100;
+const NODE_WIDTH = 160;
+const NODE_HEIGHT = 70;
+const PADDING = 40;
+const HEADER_HEIGHT = 60;
+const SPACING = 30;
 
-export function buildArchitectureGraph(config: ArchitectureConfig): {
+export function buildArchitectureGraph(
+  config: ArchitectureConfig,
+  nodePositions?: Record<string, Position>
+): {
   nodes: Node[];
   edges: Edge[];
 } {
@@ -61,16 +64,20 @@ export function buildArchitectureGraph(config: ArchitectureConfig): {
     const cols = 3;
 
     componentsInGroup.forEach((component, compIndex) => {
+      // Use explicit position if provided, otherwise fall back to grid layout
+      const explicitPos = nodePositions?.[component.id];
       const col = compIndex % cols;
       const row = Math.floor(compIndex / cols);
+
+      const position = explicitPos ?? {
+        x: PADDING + col * (NODE_WIDTH + SPACING),
+        y: HEADER_HEIGHT + PADDING + row * (NODE_HEIGHT + SPACING),
+      };
 
       nodes.push({
         id: component.id,
         type: 'archNode',
-        position: {
-          x: PADDING + col * (NODE_WIDTH + SPACING),
-          y: HEADER_HEIGHT + PADDING + row * (NODE_HEIGHT + SPACING),
-        },
+        position,
         parentId: group.id,
         extent: 'parent',
         data: {
@@ -93,6 +100,8 @@ export function buildArchitectureGraph(config: ArchitectureConfig): {
       id: `arch-edge-${index}`,
       source: conn.from,
       target: conn.to,
+      sourceHandle: conn.sourceHandle,
+      targetHandle: conn.targetHandle,
       label: conn.label,
       type: 'smoothstep',
       animated: true,

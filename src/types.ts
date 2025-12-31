@@ -60,6 +60,8 @@ export interface ArchitectureConnection {
   from: string;
   to: string;
   label?: string;
+  sourceHandle?: 'top' | 'bottom' | 'left' | 'right';
+  targetHandle?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export interface ArchitectureConfig {

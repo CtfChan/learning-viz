@@ -396,6 +396,7 @@ body {
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  pointer-events: auto;
 }
 
 .export-btn:hover {

@@ -14,7 +14,7 @@ import GroupNode from '../components/GroupNode';
 import ArchitectureNode from '../components/ArchitectureNode';
 import { ArchitectureInfoPanel } from '../components/ArchitectureInfoPanel';
 import { Navigation } from '../components/Navigation';
-import { ARCHITECTURE_CONFIG } from '../topics/kubernetes/architecture';
+import { ARCHITECTURE_CONFIG, NODE_POSITIONS } from '../topics/kubernetes/architecture';
 import { buildArchitectureGraph } from '../utils/architectureBuilder';
 import type { ArchitectureNodeData } from '../utils/architectureBuilder';
 
@@ -27,7 +27,7 @@ export function ArchitecturePage() {
   const [selectedComponent, setSelectedComponent] = useState<ArchitectureNodeData | null>(null);
 
   const { nodes: initialNodes, edges: initialEdges } = useMemo(
-    () => buildArchitectureGraph(ARCHITECTURE_CONFIG),
+    () => buildArchitectureGraph(ARCHITECTURE_CONFIG, NODE_POSITIONS),
     []
   );
 
@@ -45,6 +45,31 @@ export function ArchitecturePage() {
   const onPaneClick = useCallback(() => {
     setSelectedComponent(null);
   }, []);
+
+  const exportPositions = useCallback(() => {
+    const positions: Record<string, { x: number; y: number }> = {};
+    nodes.forEach((node) => {
+      if (node.type === 'archNode') {
+        positions[node.id] = {
+          x: Math.round(node.position.x),
+          y: Math.round(node.position.y),
+        };
+      }
+    });
+
+    const output = `export const NODE_POSITIONS: Record<string, Position> = ${JSON.stringify(positions, null, 2)};`;
+
+    // Log to console
+    console.log('=== Copy this to architecture.ts ===');
+    console.log(output);
+    console.log('====================================');
+
+    // Try to copy to clipboard
+    navigator.clipboard.writeText(output).then(
+      () => console.log('Copied to clipboard!'),
+      () => console.log('Could not copy to clipboard - copy from console above')
+    );
+  }, [nodes]);
 
   return (
     <div className="app">
@@ -99,7 +124,10 @@ export function ArchitecturePage() {
         />
       )}
       <div className="instructions">
-        <p>Click a component for details | Scroll to zoom</p>
+        <p>Drag nodes to reposition | Scroll to zoom</p>
+        <button className="export-btn" onClick={exportPositions}>
+          Export Positions
+        </button>
       </div>
     </div>
   );
