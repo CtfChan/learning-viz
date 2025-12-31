@@ -18,35 +18,20 @@ function ArchitectureNode({ data, selected }: NodeProps) {
       className={`arch-node ${selected ? 'selected' : ''}`}
       style={{ borderColor: nodeData.color }}
     >
-      {/* Target handles - where edges come in */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        id="top"
-        style={handleStyle}
-      />
-      <Handle
-        type="target"
-        position={Position.Left}
-        id="left"
-        style={handleStyle}
-      />
+      {/* Each position has both source and target handles */}
+      <Handle type="source" position={Position.Top} id="top" style={handleStyle} />
+      <Handle type="target" position={Position.Top} id="top" style={handleStyle} />
+
+      <Handle type="source" position={Position.Left} id="left" style={handleStyle} />
+      <Handle type="target" position={Position.Left} id="left" style={handleStyle} />
 
       <div className="arch-node-name">{nodeData.shortName}</div>
 
-      {/* Source handles - where edges go out */}
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="bottom"
-        style={handleStyle}
-      />
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="right"
-        style={handleStyle}
-      />
+      <Handle type="source" position={Position.Bottom} id="bottom" style={handleStyle} />
+      <Handle type="target" position={Position.Bottom} id="bottom" style={handleStyle} />
+
+      <Handle type="source" position={Position.Right} id="right" style={handleStyle} />
+      <Handle type="target" position={Position.Right} id="right" style={handleStyle} />
     </div>
   );
 }

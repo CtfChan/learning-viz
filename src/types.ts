@@ -43,7 +43,7 @@ export interface ArchitectureComponent {
   id: string;
   name: string;
   shortName: string;
-  group: 'control-plane' | 'worker-node';
+  group?: 'control-plane' | 'worker-node';
   description: string;
   responsibilities: string[];
   docsUrl: string;

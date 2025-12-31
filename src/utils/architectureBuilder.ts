@@ -28,6 +28,7 @@ const NODE_HEIGHT = 70;
 const PADDING = 40;
 const HEADER_HEIGHT = 60;
 const SPACING = 30;
+const STANDALONE_COLOR = '#FF9800';
 
 export function buildArchitectureGraph(
   config: ArchitectureConfig,
@@ -91,6 +92,33 @@ export function buildArchitectureGraph(
           group: group.name,
         } as ArchitectureNodeData,
       });
+    });
+  });
+
+  // Create standalone components (no group)
+  const standaloneComponents = config.components.filter((c) => !c.group);
+  standaloneComponents.forEach((component, index) => {
+    const explicitPos = nodePositions?.[component.id];
+    // Default position: to the right of the groups
+    const position = explicitPos ?? {
+      x: config.groups.length * (GROUP_WIDTH + GROUP_GAP) + 50,
+      y: 50 + index * (NODE_HEIGHT + SPACING),
+    };
+
+    nodes.push({
+      id: component.id,
+      type: 'archNode',
+      position,
+      data: {
+        id: component.id,
+        name: component.name,
+        shortName: component.shortName,
+        description: component.description,
+        responsibilities: component.responsibilities,
+        docsUrl: component.docsUrl,
+        color: STANDALONE_COLOR,
+        group: 'External',
+      } as ArchitectureNodeData,
     });
   });
 
