@@ -37,3 +37,33 @@ export interface TopicConfig {
   nodePositions: Record<string, Position>; // Explicit position for each node by name
   connections: Connection[];
 }
+
+// Architecture visualization types
+export interface ArchitectureComponent {
+  id: string;
+  name: string;
+  shortName: string;
+  group: 'control-plane' | 'worker-node';
+  description: string;
+  responsibilities: string[];
+  docsUrl: string;
+}
+
+export interface ArchitectureGroup {
+  id: 'control-plane' | 'worker-node';
+  name: string;
+  description: string;
+  color: string;
+}
+
+export interface ArchitectureConnection {
+  from: string;
+  to: string;
+  label?: string;
+}
+
+export interface ArchitectureConfig {
+  groups: ArchitectureGroup[];
+  components: ArchitectureComponent[];
+  connections: ArchitectureConnection[];
+}

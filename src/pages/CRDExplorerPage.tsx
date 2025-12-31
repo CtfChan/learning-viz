@@ -10,13 +10,14 @@ import {
 import type { Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-import { CRDNode } from './components/CRDNode';
-import { InfoPanel } from './components/InfoPanel';
-import { Header } from './components/Header';
-import { Legend } from './components/Legend';
-import type { CRDData } from './types';
-import { defaultTopic } from './topics';
-import { buildNodesAndEdges } from './utils/graphBuilder';
+import { CRDNode } from '../components/CRDNode';
+import { InfoPanel } from '../components/InfoPanel';
+import { Header } from '../components/Header';
+import { Legend } from '../components/Legend';
+import { Navigation } from '../components/Navigation';
+import type { CRDData } from '../types';
+import { defaultTopic } from '../topics';
+import { buildNodesAndEdges } from '../utils/graphBuilder';
 
 interface CRDNodeData extends CRDData {
   color: string;
@@ -26,7 +27,7 @@ const nodeTypes = {
   crd: CRDNode,
 };
 
-function App() {
+export function CRDExplorerPage() {
   const [selectedCRD, setSelectedCRD] = useState<CRDData | null>(null);
   const currentTopic = defaultTopic;
 
@@ -54,7 +55,6 @@ function App() {
       );
       if (categoryNodes.length === 0) return;
 
-      // Highlight the category nodes
       setNodes((nds) =>
         nds.map((n) => ({
           ...n,
@@ -65,7 +65,6 @@ function App() {
         }))
       );
 
-      // Reset after a delay
       setTimeout(() => {
         setNodes((nds) =>
           nds.map((n) => ({
@@ -81,6 +80,7 @@ function App() {
   return (
     <div className="app">
       <Header topic={currentTopic} />
+      <Navigation />
       <Legend
         categoryColors={currentTopic.categoryColors}
         onCategoryClick={focusCategory}
@@ -120,5 +120,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
