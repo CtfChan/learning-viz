@@ -46,31 +46,6 @@ export function ArchitecturePage() {
     setSelectedComponent(null);
   }, []);
 
-  const exportPositions = useCallback(() => {
-    const positions: Record<string, { x: number; y: number }> = {};
-    nodes.forEach((node) => {
-      if (node.type === 'archNode') {
-        positions[node.id] = {
-          x: Math.round(node.position.x),
-          y: Math.round(node.position.y),
-        };
-      }
-    });
-
-    const output = `export const NODE_POSITIONS: Record<string, Position> = ${JSON.stringify(positions, null, 2)};`;
-
-    // Log to console
-    console.log('=== Copy this to architecture.ts ===');
-    console.log(output);
-    console.log('====================================');
-
-    // Try to copy to clipboard
-    navigator.clipboard.writeText(output).then(
-      () => console.log('Copied to clipboard!'),
-      () => console.log('Could not copy to clipboard - copy from console above')
-    );
-  }, [nodes]);
-
   return (
     <div className="app">
       <div className="header">
@@ -124,10 +99,7 @@ export function ArchitecturePage() {
         />
       )}
       <div className="instructions">
-        <p>Drag nodes to reposition | Scroll to zoom</p>
-        <button className="export-btn" onClick={exportPositions}>
-          Export Positions
-        </button>
+        <p>Click a component for details | Scroll to zoom</p>
       </div>
     </div>
   );
