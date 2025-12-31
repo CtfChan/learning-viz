@@ -7,6 +7,12 @@ export function Navigation() {
         to="/"
         className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
       >
+        Home
+      </NavLink>
+      <NavLink
+        to="/crds"
+        className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+      >
         CRD Explorer
       </NavLink>
       <NavLink

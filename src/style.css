@@ -569,3 +569,157 @@ body {
 .arch-legend .legend-label {
   color: rgba(255, 255, 255, 0.8);
 }
+
+/* Homepage Styles */
+.home-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-hero {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-shadow: 0 4px 30px rgba(100, 108, 255, 0.5);
+}
+
+.hero-icon {
+  font-size: 3.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  max-width: 500px;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(100, 108, 255, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.home-cards {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 900px;
+  z-index: 1;
+}
+
+.viz-card {
+  background: rgba(20, 20, 40, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 32px;
+  width: 380px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.viz-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--card-color);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.viz-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--card-color);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px color-mix(in srgb, var(--card-color) 20%, transparent);
+}
+
+.viz-card:hover::before {
+  opacity: 1;
+}
+
+.viz-card-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.viz-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 12px 0;
+}
+
+.viz-card-description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+.viz-card-arrow {
+  font-size: 1.5rem;
+  color: var(--card-color);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.viz-card:hover .viz-card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.home-footer {
+  position: absolute;
+  bottom: 30px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  z-index: 1;
+}
+
+.home-footer p {
+  margin: 0;
+}
