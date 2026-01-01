@@ -4,6 +4,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { CRDExplorerPage } from './pages/CRDExplorerPage';
 import { ArchitecturePage } from './pages/ArchitecturePage';
+import { KueuePage } from './pages/KueuePage';
 import './style.css';
 
 const router = createHashRouter([
@@ -18,6 +19,10 @@ const router = createHashRouter([
   {
     path: '/architecture',
     element: <ArchitecturePage />,
+  },
+  {
+    path: '/kueue',
+    element: <KueuePage />,
   },
 ]);
 

@@ -25,6 +25,14 @@ const visualizations: VisualizationCard[] = [
     icon: "🏗️",
     color: "#4CAF50",
   },
+  {
+    title: "Kueue",
+    description:
+      "Explore Kueue's job queueing system with ClusterQueues, LocalQueues, and resource management.",
+    path: "/kueue",
+    icon: "📊",
+    color: "#9C27B0",
+  },
 ];
 
 export function HomePage() {

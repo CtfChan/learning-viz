@@ -21,6 +21,12 @@ export function Navigation() {
       >
         Architecture
       </NavLink>
+      <NavLink
+        to="/kueue"
+        className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+      >
+        Kueue
+      </NavLink>
     </nav>
   );
 }
