@@ -14,7 +14,7 @@ import GroupNode from '../components/GroupNode';
 import ArchitectureNode from '../components/ArchitectureNode';
 import { ArchitectureInfoPanel } from '../components/ArchitectureInfoPanel';
 import { Navigation } from '../components/Navigation';
-import { KUEUE_CONFIG, KUEUE_NODE_POSITIONS } from '../topics/kubernetes/kueue';
+import { KUEUE_CONFIG, KUEUE_NODE_POSITIONS, KUEUE_GROUP_POSITIONS } from '../topics/kubernetes/kueue';
 import { buildArchitectureGraph } from '../utils/architectureBuilder';
 import type { ArchitectureNodeData } from '../utils/architectureBuilder';
 
@@ -27,7 +27,7 @@ export function KueuePage() {
   const [selectedComponent, setSelectedComponent] = useState<ArchitectureNodeData | null>(null);
 
   const { nodes: initialNodes, edges: initialEdges } = useMemo(
-    () => buildArchitectureGraph(KUEUE_CONFIG, KUEUE_NODE_POSITIONS),
+    () => buildArchitectureGraph(KUEUE_CONFIG, KUEUE_NODE_POSITIONS, KUEUE_GROUP_POSITIONS),
     []
   );
 
@@ -44,29 +44,6 @@ export function KueuePage() {
   const onPaneClick = useCallback(() => {
     setSelectedComponent(null);
   }, []);
-
-  const exportPositions = useCallback(() => {
-    const positions: Record<string, { x: number; y: number }> = {};
-    nodes.forEach((node) => {
-      if (node.type === 'archNode') {
-        positions[node.id] = {
-          x: Math.round(node.position.x),
-          y: Math.round(node.position.y),
-        };
-      }
-    });
-
-    const output = `export const KUEUE_NODE_POSITIONS: Record<string, Position> = ${JSON.stringify(positions, null, 2)};`;
-
-    console.log('=== Copy this to kueue.ts ===');
-    console.log(output);
-    console.log('=============================');
-
-    navigator.clipboard.writeText(output).then(
-      () => console.log('Copied to clipboard!'),
-      () => console.log('Could not copy to clipboard - copy from console above')
-    );
-  }, [nodes]);
 
   return (
     <div className="app">
@@ -128,10 +105,7 @@ export function KueuePage() {
         />
       )}
       <div className="instructions">
-        <p>Drag nodes to reposition | Scroll to zoom</p>
-        <button className="export-btn" onClick={exportPositions}>
-          Export Positions
-        </button>
+        <p>Click a component for details | Scroll to zoom</p>
       </div>
     </div>
   );

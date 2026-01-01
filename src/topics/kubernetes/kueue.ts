@@ -1,6 +1,12 @@
 import type { ArchitectureConfig } from "../../types";
 import type { Position } from "../../types";
 
+// Explicit group positions
+export const KUEUE_GROUP_POSITIONS: Record<string, Position> = {
+  "control-plane": { x: 0, y: -200 }, // Cohort
+  "worker-node": { x: 0, y: 300 }, // Namespace Scope
+};
+
 // Explicit node positions
 export const KUEUE_NODE_POSITIONS: Record<string, Position> = {
   // Cohort contains ClusterQueues

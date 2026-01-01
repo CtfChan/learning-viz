@@ -32,7 +32,8 @@ const STANDALONE_COLOR = '#FF9800';
 
 export function buildArchitectureGraph(
   config: ArchitectureConfig,
-  nodePositions?: Record<string, Position>
+  nodePositions?: Record<string, Position>,
+  groupPositions?: Record<string, Position>
 ): {
   nodes: Node[];
   edges: Edge[];
@@ -42,13 +43,14 @@ export function buildArchitectureGraph(
 
   // Create group nodes (parents)
   config.groups.forEach((group, groupIndex) => {
-    const groupX = groupIndex * (GROUP_WIDTH + GROUP_GAP);
-    const groupY = 50;
+    const defaultX = groupIndex * (GROUP_WIDTH + GROUP_GAP);
+    const defaultY = 50;
+    const explicitPos = groupPositions?.[group.id];
 
     nodes.push({
       id: group.id,
       type: 'group',
-      position: { x: groupX, y: groupY },
+      position: explicitPos ?? { x: defaultX, y: defaultY },
       data: {
         label: group.name,
         description: group.description,
